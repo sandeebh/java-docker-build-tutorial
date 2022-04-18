@@ -1,0 +1,37 @@
+name: build maven code
+on:
+  push:
+    branches: ['master']
+
+jobs:
+  run-mvn-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Maven
+        uses: stCarolas/setup-maven@v4.3
+        with:
+          maven-version: 3.8.2
+          
+      - name: Maven Cache
+        uses: skjolber/maven-cache-github-action@v1.1
+        with:
+          # Build step step, i.e. restore or save
+          step: save
+          depth: 100    
+          
+      - uses: actions/checkout@v2
+      - name: maven build
+        run: |
+          mvn deploy -s settings.xml -Dtoken=${{ secrets.GIT_TOKEN }} -Duser=${{ secrets.REPO_OWNER }}
+
+      - name: purge packages
+        # You may pin to the exact commit or the version.
+        uses: actions/delete-package-versions@v3
+        with:
+          # Number of versions to keep starting with the latest version By default keeps no version. To delete all versions set this as 0.
+          min-versions-to-keep: 2
+          #num-old-versions-to-delete: 10
+          package-name: 'snapshots.com.example.selenium.selenium-springboot-example'
+          # Deletes only pre-release versions. The number of pre-release versions to keep can be specified by min-versions-to-keep. When this is set num-old-versions-to-delete and ignore-versions will not be taken into account. By default this is set to false
+          delete-only-pre-release-versions: true
+          token: ${{ secrets.GITHUB_TOKEN }}

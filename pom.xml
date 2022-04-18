@@ -69,6 +69,22 @@
     </dependency>
 
   </dependencies>
+   <distributionManagement>
+       <repository>
+          <uniqueVersion>false</uniqueVersion>
+          <id>github</id>
+          <name>release repo</name>
+          <url>https://maven.pkg.github.com/sandeebh/java-docker-build-tutorial</url>
+          <layout>default</layout>
+        </repository>
+        <snapshotRepository>
+          <uniqueVersion>false</uniqueVersion>
+          <id>snapshotjava</id>
+          <name>snapshot repo</name>
+          <url>https://maven.pkg.github.com/sandeebh/java-docker-build-tutorial/snapshots</url>
+          <layout>legacy</layout>
+        </snapshotRepository>
+    </distributionManagement>
 
   <build>
     <plugins>
